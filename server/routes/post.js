@@ -1,17 +1,22 @@
 const express = require("express")
+const db = require("../database")
 
 const app = express()
 
-app.get("/:id", (req, res) => {
+app.get("/:id", async(req, res) => {
 	const {id} = req.params
-	res.send({
-		title: `Titre ${id}`,
-		content: "Content"
-	})
+	if(id === undefined) {
+		res.status(400).json({error: "no id given"})
+		return
+	}
+
+	const post = await db.getPostById(id)
+	res.status(200).json(post)
 })
 
 app.get("/", (req, res) => {
-	const {limit} = req.params
+	const {query} = req.params
+	
 })
 
 module.exports = app

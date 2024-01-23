@@ -3,7 +3,7 @@ import Login from "./pages/Login"
 import Header from "./components/Header"
 import Search from "./pages/Search"
 import UserSettings from "./pages/UserSettings"
-import Blog from "./pages/Blog"
+import Post from "./pages/Post"
 import Unknown from "./pages/Unknown"
 
 const router = createBrowserRouter([
@@ -22,8 +22,8 @@ const router = createBrowserRouter([
 				path: "/settings",
 				element: <UserSettings />
 			}, {
-				path: "/blog/:id",
-				element: <Blog />
+				path: "/post/:id",
+				element: <Post />
 		}]
 	}
 ])
