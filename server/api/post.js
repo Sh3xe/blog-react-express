@@ -14,9 +14,12 @@ app.get("/:id", async(req, res) => {
 	res.status(200).json(post)
 })
 
-app.get("/", (req, res) => {
-	const {query} = req.params
-	
+app.get("/", async(req, res) => {
+	const {query, limit} = req.params
+
+	const posts = await db.searchPostByQuery(query, limit)
+	console.log(posts)
+	res.status(200).json(posts)
 })
 
 module.exports = app

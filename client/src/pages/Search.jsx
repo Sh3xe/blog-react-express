@@ -9,16 +9,14 @@ function Search() {
 	}
 
 	const sendQuery = (e) => {
-		fetch("http://localhost:8080/post/query", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json"
-			},
-			body: JSON.stringify({query})
-		}).then( res => {
-			res.json()
-				.then(res => setPosts(res))
-				.catch(err => console.error(err))
+		const urlParams = new URLSearchParams({query, limit:10}).toString()
+		const url = "http://localhost:8080/post?" + urlParams
+
+		fetch(url)
+			.then( res => {
+				res.json()
+					.then(res => setPosts(res))
+					.catch(err => console.error(err))
 		}).catch( err => console.error(err))
 	}
 

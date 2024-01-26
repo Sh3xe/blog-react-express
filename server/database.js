@@ -184,6 +184,17 @@ function getPostById(post_id) {
 	})
 }
 
+function searchPostByQuery(q, limit) {
+	//TODO: implémenter
+	const query = `SELECT * FROM posts LIMIT ?`
+	return new Promise( (resolve, reject) => {
+		db.all(query, [limit], (err, res) => {
+			if(err) reject(err) 
+			resolve(res)
+		})
+	})
+}
+
 module.exports = {
 	createPost,
 	createComment,
@@ -197,5 +208,6 @@ module.exports = {
 	getUserById,
 	getUserByUsername,
 	getPostById,
-	getUserPosts
+	getUserPosts,
+	searchPostByQuery
 }
