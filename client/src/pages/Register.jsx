@@ -1,12 +1,19 @@
-import { useState } from "react"
+import {useState} from "react"
 
-function Login() {
-
+function Register() {
 	const [username, setUsername] = useState("")
 	const [password, setPassword] = useState("")
+	const [email, setEmail] = useState("")
 	
 	const logUser = (event) => {
 		event.preventDefault()
+		fetch("http://localhost:8080/auth/register", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json"
+			},
+			body: JSON.stringify({username, email, password})
+		})
 	}
 
 	const changeUsername = (event) => {
@@ -15,6 +22,10 @@ function Login() {
 
 	const changePassword = (event) => {
 		setPassword(event.target.value)
+	}
+
+	const changeEmail = (event) => {
+		setEmail(event.target.value)
 	}
 
 	return <form onSubmit={logUser}>
@@ -27,6 +38,13 @@ function Login() {
 		/>
 		<input
 			type="text"
+			name="email"
+			placeholder="email"
+			value={email}
+			onChange={changeEmail}
+		/>
+		<input
+			type="text"
 			name="password"
 			placeholder="Password"
 			value={password}
@@ -36,4 +54,4 @@ function Login() {
 	</form>
 }
 
-export default Login
+export default Register

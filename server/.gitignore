@@ -2,3 +2,4 @@ node_modules
 test.js
 db.sqlite
 db.sqlite-journal
+.env

@@ -128,10 +128,20 @@ function removeUserById(user_id) {
 }
 
 async function createUser(user) {
+	//TODO: check for unique constrain, add error messages
 	const {username, email, password} = user 
 	const salt = await bcrypt.genSalt(10)
-	var insert = `INSERT INTO users (username, email, password, salt, creation) VALUES (?,?,?,?,?)`
-	db.run(insert, [username, email, bcrypt.hashSync(password, salt), salt, Date("now")])
+	const password_hash = await bcrypt.hash(password, salt)
+	const query = `INSERT INTO users (username, email, password, salt, creation) VALUES (?,?,?,?,?)`
+	const creation_date = Date("now")
+	return new Promise((resolve, reject) => {
+		db.run(query, [username, email, password_hash, salt, creation_date], (err) => {
+			if(err) reject(err)
+			else resolve({
+				username, email, password_hash, salt, creation_date
+			})
+		})
+	})
 }
 
 function getUserByUsername(username) {

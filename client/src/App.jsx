@@ -5,9 +5,10 @@ import Search from "./pages/Search"
 import UserSettings from "./pages/UserSettings"
 import Post from "./pages/Post"
 import Unknown from "./pages/Unknown"
+import Register from "./pages/Register"
 
 const router = createBrowserRouter([
-	{
+	{ 
 		path: "/",
 		element: <Root />,
 		errorElement: <Unknown />,
@@ -15,6 +16,9 @@ const router = createBrowserRouter([
 			{
 				path: "/login",
 				element: <Login />
+			}, {
+				path: "/register",
+				element: <Register />
 			}, {
 				path: "/",
 				element: <Search />
