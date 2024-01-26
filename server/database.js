@@ -135,11 +135,9 @@ async function createUser(user) {
 	const query = `INSERT INTO users (username, email, password, salt, creation) VALUES (?,?,?,?,?)`
 	const creation_date = Date("now")
 	return new Promise((resolve, reject) => {
-		db.run(query, [username, email, password_hash, salt, creation_date], (err) => {
+		db.run(query, [username, email, password_hash, salt, creation_date], (res, err) => {
 			if(err) reject(err)
-			else resolve({
-				username, email, password_hash, salt, creation_date
-			})
+			else resolve()
 		})
 	})
 }
