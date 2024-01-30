@@ -1,6 +1,7 @@
 const express = require("express")
 const jwt = require("jsonwebtoken")
 const db = require("../database")
+const bcrypt = require("bcrypt")
 const {registerFormValidationErrors, loginFormValidationErrors} = require("../authentication/auth_utils")
 
 const app = express()
@@ -16,6 +17,20 @@ app.post("/login", async(req, res) => {
 	}
 	
 	const user = await db.getUserByUsername(username)
+	// check if user exists
+	if(user === undefined) {
+		res.status(400).json({errors: ["Nom d'utilisateur ou mot de passe incorrect"]})
+		return
+	}
+	
+	// check if the password is correct
+	const is_password_correct = await bcrypt.compare(password, user.password)
+	if( !is_password_correct ) {
+		res.status(400).json({errors: ["Nom d'utilisateur ou mot de passe incorrect"]})
+		return
+	}
+	
+	// manage session
 	const jwt_token = jwt.sign({ username, id: user.id }, process.env.TOKEN_KEY)
 	res.json({accessToken: jwt_token, username, id: user.id})
 })

@@ -23,7 +23,7 @@ function Login() {
 		}).then( res => {
 			res.json().then(res => {
 				if(res.errors !== undefined) {
-					setErrors(errors)
+					setErrors(res.errors)
 				}
 				else {
 					setUser(res)
