@@ -1,12 +1,35 @@
-import { useState } from "react"
+import { useState, useContext } from "react"
+import {UserContext} from "../App"
 
 function Login() {
 
 	const [username, setUsername] = useState("")
 	const [password, setPassword] = useState("")
+	const [errors, setErrors] = useState([])
+
+	const [user, setUser] = useContext(UserContext)
 	
 	const logUser = (event) => {
 		event.preventDefault()
+
+		const formData = {username, password}
+
+		fetch("http://localhost:8080/auth/login", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json"
+			},
+			body: JSON.stringify(formData)
+		}).then( res => {
+			res.json().then(res => {
+				if(res.errors !== undefined) {
+					setErrors(res.errors)
+				}
+				else {
+					setUser(res)
+				}
+			}).catch(err => console.error(err))
+		}).catch(err => console.error(err))
 	}
 
 	const changeUsername = (event) => {
@@ -17,7 +40,8 @@ function Login() {
 		setPassword(event.target.value)
 	}
 
-	return <form onSubmit={logUser}>
+	return <>
+		<form onSubmit={logUser}>
 		<input
 			type="text"
 			name="username"
@@ -34,6 +58,10 @@ function Login() {
 		/>
 		<button type="submit">Login</button>
 	</form>
+	<ul>
+		{errors.map((err, i) => <li key={i}>{JSON.stringify(err)}</li>)}
+	</ul>
+	</>
 }
 
 export default Login

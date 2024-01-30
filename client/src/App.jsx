@@ -7,6 +7,10 @@ import Post from "./pages/Post"
 import Unknown from "./pages/Unknown"
 import Register from "./pages/Register"
 
+import { createContext, useState } from "react"
+
+export const UserContext = createContext(null)
+
 const router = createBrowserRouter([
 	{ 
 		path: "/",
@@ -37,7 +41,11 @@ function Root() {
 }
 
 function App() {
-	return <RouterProvider router={router} />
+	const userState = useState(undefined)
+
+	return <UserContext.Provider value={userState}>
+		<RouterProvider router={router} />
+	</UserContext.Provider>
 }
 
 export default App

@@ -13,7 +13,7 @@ function validatePassword(password) {
 async function registerFormValidationErrors(form) {
 	errors = []
 
-	if(form.username === undefined || form.password === undefined || form.email === undefined)
+	if(!form.username || !form.password || !form.email)
 		return ["Formulaire incomplet"]
 	
 	if(!validateEmail(form.email))
@@ -22,7 +22,7 @@ async function registerFormValidationErrors(form) {
 	if(!validatePassword(form.password))
 		errors.push("Le mot de passe n'est pas asses puissant, il doit contenir: au moins 8 charactères, des caractères spéciaux, des chiffres et des lettres")
 
-	if(username.length <= 4)
+	if(form.username.length <= 4)
 		errors.push("Nom d'utilisateur trop court")
 
 	const user = await db.getUserByUsername(form.username)
@@ -36,21 +36,19 @@ async function registerFormValidationErrors(form) {
 function loginFormValidationErrors(form) {
 	errors = []
 
-	if(form.username === undefined || form.password === undefined)
+	if(!form.username || !form.password)
 		return ["Formulaire incomplet"]
 	
-	if(!validateEmail(form.email))
-		errors.push("Courriel non valide")
-
 	if(!validatePassword(form.password))
 		errors.push("Le mot de passe n'est pas asses puissant, il doit contenir: au moins 8 charactères, des caractères spéciaux, des chiffres et des lettres")
 
-	if(username.length <= 4)
+	if(form.username.length <= 4)
 		errors.push("Nom d'utilisateur trop court")
 
 	return errors
 }
 
 module.exports = {
-	registerFormValidationErrors
+	registerFormValidationErrors,
+	loginFormValidationErrors
 }

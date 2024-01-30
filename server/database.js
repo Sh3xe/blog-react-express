@@ -135,11 +135,9 @@ async function createUser(user) {
 	const query = `INSERT INTO users (username, email, password, salt, creation) VALUES (?,?,?,?,?)`
 	const creation_date = Date("now")
 	return new Promise((resolve, reject) => {
-		db.run(query, [username, email, password_hash, salt, creation_date], (err) => {
+		db.run(query, [username, email, password_hash, salt, creation_date], (res, err) => {
 			if(err) reject(err)
-			else resolve({
-				username, email, password_hash, salt, creation_date
-			})
+			else resolve()
 		})
 	})
 }
@@ -186,6 +184,17 @@ function getPostById(post_id) {
 	})
 }
 
+function searchPostByQuery(q, limit) {
+	//TODO: implémenter
+	const query = `SELECT * FROM posts LIMIT ?`
+	return new Promise( (resolve, reject) => {
+		db.all(query, [limit], (err, res) => {
+			if(err) reject(err) 
+			resolve(res)
+		})
+	})
+}
+
 module.exports = {
 	createPost,
 	createComment,
@@ -199,5 +208,6 @@ module.exports = {
 	getUserById,
 	getUserByUsername,
 	getPostById,
-	getUserPosts
+	getUserPosts,
+	searchPostByQuery
 }
